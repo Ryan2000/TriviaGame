@@ -5,7 +5,8 @@
 questionCsv =
     [
         "Who played Andy Dufresne in the ShawShank Redemption?, Morgan Freeman, Tim Robbins, Robert Dinero, William Sadler, Correct Answer Tim Robbins",
-        "Question 2, Answer 1, Answer 2, Answer 3, Answer 4, Correct Answer",
+        "The Godfather was released in what year?, 1972, 1971, 1973, 1974, Correct Answer 1972",
+        ""
         //and so on
     ];
 
@@ -38,13 +39,27 @@ function buildQuestions(question){
     questions.push(question);
 }
 
-function updateQuestion(newQuestion){
+function updateQuestion(newQuestion) {
     $('#question1').text(newQuestion.question);
-    $('#a1').html(newQuestion.one);
-    $('#a2').html(newQuestion.two);
-    $('#a3').html(newQuestion.three);
-    $('#a4').html(newQuestion.four);
+    $('#a1').next().text(newQuestion.one);
+    $('#a2').next().text(newQuestion.two);
+    $('#a3').next().text(newQuestion.three);
+    $('#a4').next().text(newQuestion.four);
+
 }
 
+function checkAnswers() {
 
+}
 
+function timer() {
+
+}
+
+function scoreCalculator() {
+
+}
+
+function gameReset() {
+
+}
