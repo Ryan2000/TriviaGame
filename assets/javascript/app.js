@@ -32,6 +32,7 @@ $(document).ready(function(){
     $("#submit").click(function() {
         var nextQuestion = questions[currentQuestion++];
         updateQuestion(nextQuestion);
+        roundReset();
     });
 });
 
@@ -57,6 +58,12 @@ function updateQuestion(newQuestion) {
     $('#a3').next().text(newQuestion.three);
     $('#a4').next().text(newQuestion.four);
 
+}
+
+function roundReset() {
+    $('input').each(function(){
+        $(this).prop('checked', false);
+    });
 }
 
 //this function will check for the correct answer
