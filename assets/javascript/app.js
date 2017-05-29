@@ -12,7 +12,7 @@ questionCsv =
         "1987 buddy cop movie staring both Tom Hanks and Dan Akroyd?, Spies Like Us, Dragnet, Turner & Hooch, Big, Correct Answer Dragnet",
         "Axel Foley was played by which male actor?, Chevy Chase, Martin Lawrence, Eddie Murphy, Mel Gibson, Correct Answer Eddie Murphy",
         "Which character said the following? Back in '82 I used to be able to throw a pigskin a quarter mile, Kipp, Napolean, Uncle Rico, Jonah Hill, Correct Answer Uncle Rico?",
-        "Who played the female lead in Memoirs of an Invisible Man?, Daryl Hannah, Jane Fonda, Debra Winger, Sissy Spacek",
+        "Who played the female lead in Memoirs of an Invisible Man?, Daryl Hannah, Jane Fonda, Debra Winger, Sissy Spacek, Correct Answer Daryl Hannah",
         "Who played the female lead in True Lies?, Sigourney Weaver, Diane Keaton, Jamie Lee Curtis, Alicia Silverstone, Correct Answer Jamie Lee Curtis",
 
 
@@ -61,9 +61,7 @@ function updateQuestion(newQuestion) {
 }
 
 function roundReset() {
-    $('input').each(function(){
-        $(this).prop('checked', false);
-    });
+    $('input:radio').prop('checked', false);
 }
 
 //this function will check for the correct answer
