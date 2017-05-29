@@ -15,24 +15,21 @@ questionCsv =
         "Who played the female lead in Memoirs of an Invisible Man?, Daryl Hannah, Jane Fonda, Debra Winger, Sissy Spacek, Daryl Hannah",
         "Who played the female lead in True Lies?, Sigourney Weaver, Diane Keaton, Jamie Lee Curtis, Alicia Silverstone, Jamie Lee Curtis",
 
-
-
-
         //and so on
     ];
 
+
 var questions = [];
 var currentQuestion = 0;
+
 
 $(document).ready(function(){
     for(var i = 0; i < questionCsv.length; i++){
         buildQuestions(questionCsv[i]);
     }
-
-
     //Set the page to the first question
     updateQuestion(questions[currentQuestion]);
-    timer();
+    timerHandle = timer();
 
     $("#submit").click(function() {
         //Check for game over by comparing
@@ -51,14 +48,18 @@ $(document).ready(function(){
             roundReset();
 
             //Reset remainingTime to 10
-            timeRemaining = 10;
+            if (currentQuestion < questions.length - 1){
+                //Reset remainingTime to 10
+                timeRemaining = 10;
+            } else {
+                window.clearTimeout(timerHandle);
+            }
 
         } else {
 
             scoreCalculator();
         }
 
-        //The else part of the if block will hold what we do if the game is over
     });
 });
 
@@ -77,6 +78,7 @@ function buildQuestions(question){
     questions.push(question);
 }
 
+
 function updateQuestion(newQuestion) {
     $('#question1').text(newQuestion.question);
     $('#a1').next().text(newQuestion.one);
@@ -86,13 +88,14 @@ function updateQuestion(newQuestion) {
 
 }
 
+
 function roundReset() {
     $('input:radio').prop('checked', false);
 }
 
+
 var correct = 0;
 var incorrect = 0;
-
 //this function will check for the correct answer
 function checkAnswers() {
     //Store the current question in a variable
@@ -119,34 +122,37 @@ function checkAnswers() {
         }
 
     });
-    console.log('Correct Answers: ' + correct);
-    console.log('Incorrect Answers: ' + incorrect);
-
+    //console.log('Correct Answers: ' + correct);
+    //console.log('Incorrect Answers: ' + incorrect);
 }
 
+
 var timeRemaining = 10;
+var timerHandle;
 //this function will launch the timer
 function timer() {
 
-    setTimeout(function(){
+    return setTimeout(function(){
 
-        if ((currentQuestion + 1) < questions.length) {
-
-            console.log(timeRemaining + ' seconds remaining');
+        if (currentQuestion < questions.length) {
+            //console.log(timeRemaining + ' seconds remaining');
 
             $('#timer').text('Time Remaining: ' + timeRemaining);
             timeRemaining--;
 
             if (timeRemaining < 0) {
                 timeRemaining = 10;
+                currentQuestion++;
 
-                var nextQuestion = questions[++currentQuestion];
-                updateQuestion(nextQuestion);
-
-                roundReset();
+                if(currentQuestion < questions.length){
+                    var nextQuestion = questions[currentQuestion];
+                    updateQuestion(nextQuestion);
+                    roundReset();
+                }
             }
+
             //Make a recursive call to this function to reset the timer
-            timer();
+            timerHandle = timer();
 
         } else {
             //no recursive call to timer() so the timer no longer resets
