@@ -5,13 +5,13 @@
 questionCsv =
     [
         "Who played Andy Dufresne in the ShawShank Redemption?, Morgan Freeman, Tim Robbins, Robert Dinero, William Sadler, Tim Robbins",
-        "The Godfather was released in what year?, 1972, 1971, 1973, 1974, Correct Answer 1972",
+        "The Godfather was released in what year?, 1972, 1971, 1973, 1974, 1972",
         "Who was the best Batman of all time?, Michael Keaton, Val Kilmer, Christian Bale, George Clooney, Michael Keaton",
         "Johnny Utah was played by whom?, Keanu Reeves, Patrick Swayze, Eddie Murphy, Gary Busey, Keanu Reeves",
         "Lethal Weapon was released in what year?, 1987, 1988, 1985, 1986, 1987",
         "1987 buddy cop movie staring both Tom Hanks and Dan Akroyd?, Spies Like Us, Dragnet, Turner & Hooch, Big, Dragnet",
         "Axel Foley was played by which male actor?, Chevy Chase, Martin Lawrence, Eddie Murphy, Mel Gibson, Eddie Murphy",
-        "Which character said the following? Back in '82 I used to be able to throw a pigskin a quarter mile, Kipp, Napolean, Uncle Rico, Jonah Hill, Uncle Rico?",
+        "Which character said the following? Back in '82 I used to be able to throw a pigskin a quarter mile, Kipp, Napolean, Uncle Rico, Jonah Hill, Uncle Rico",
         "Who played the female lead in Memoirs of an Invisible Man?, Daryl Hannah, Jane Fonda, Debra Winger, Sissy Spacek, Daryl Hannah",
         "Who played the female lead in True Lies?, Sigourney Weaver, Diane Keaton, Jamie Lee Curtis, Alicia Silverstone, Jamie Lee Curtis",
 
@@ -29,13 +29,32 @@ $(document).ready(function(){
         buildQuestions(questionCsv[i]);
     }
 
+
+    //Set the page to the first question
+    updateQuestion(questions[currentQuestion]);
+
     $("#submit").click(function() {
-        var nextQuestion = questions[currentQuestion++];
-        updateQuestion(nextQuestion);
+        //Check for game over by comparing
+        //currentQuestion to questions.length - 1
+        //currentQuestion reflects the position within the array
+        if (currentQuestion < questions.length -1) {
 
-        roundReset();
-        checkAnswers();
+            //Check answer first
+            checkAnswers();
 
+            //Then move to next question
+            var nextQuestion = questions[++currentQuestion];
+            updateQuestion(nextQuestion);
+
+            //Reset the round
+            roundReset();
+
+        } else {
+
+            scoreCalculator();
+        }
+
+        //The else part of the if block will hold what we do if the game is over
     });
 });
 
@@ -83,20 +102,22 @@ function checkAnswers() {
         //use an if statement if it's selected
         if (selected){
             //select the label using the next() function
-            //Get the text of the selected radio buttons labbel
+            //Get the text of the selected radio buttons label
             var ans = $(this).next().text();
             //compare the text in the label to the question.answer property
             if (ans == q.answer){
-                //if correct - increment the correct varaible
+                //if correct - increment the correct variable
                 correct++;
             } else {
                 //else - increment the incorrect variable
                 incorrect++;
             }
         }
+
     });
     console.log('Correct Answers: ' + correct);
     console.log('Incorrect Answers: ' + incorrect);
+
 }
 
 
@@ -107,6 +128,16 @@ function timer() {
 
 //this function will keep track of score
 function scoreCalculator() {
+    //select #timer using jquery
+    $('#timer').text('All Done!')
+
+    //select #question1 and add a call to .text(' ') like we did above
+    $('#question1').text('Correct Answers: ' + correct);
+
+    var html = "<p>Incorrect Answers: " + incorrect + "</p>";
+    $('answerButtons')
+        .empty()
+        .html(html);
 
 }
 
