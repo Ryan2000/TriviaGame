@@ -130,7 +130,7 @@ function timer() {
 
     setTimeout(function(){
 
-        if (currentQuestion < questions.length - 1) {
+        if ((currentQuestion + 1) < questions.length) {
 
             console.log(timeRemaining + ' seconds remaining');
 
@@ -145,10 +145,11 @@ function timer() {
 
                 roundReset();
             }
+            //Make a recursive call to this function to reset the timer
             timer();
 
         } else {
-
+            //no recursive call to timer() so the timer no longer resets
             scoreCalculator();
         }
 
