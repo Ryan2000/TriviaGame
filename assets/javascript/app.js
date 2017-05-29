@@ -32,6 +32,7 @@ $(document).ready(function(){
 
     //Set the page to the first question
     updateQuestion(questions[currentQuestion]);
+    timer();
 
     $("#submit").click(function() {
         //Check for game over by comparing
@@ -48,6 +49,9 @@ $(document).ready(function(){
 
             //Reset the round
             roundReset();
+
+            //Reset remainingTime to 10
+            timeRemaining = 10;
 
         } else {
 
@@ -120,10 +124,35 @@ function checkAnswers() {
 
 }
 
-
+var timeRemaining = 10;
 //this function will launch the timer
 function timer() {
 
+    setTimeout(function(){
+
+        if (currentQuestion < questions.length - 1) {
+
+            console.log(timeRemaining + ' seconds remaining');
+
+            $('#timer').text('Time Remaining: ' + timeRemaining);
+            timeRemaining--;
+
+            if (timeRemaining < 0) {
+                timeRemaining = 10;
+
+                var nextQuestion = questions[++currentQuestion];
+                updateQuestion(nextQuestion);
+
+                roundReset();
+            }
+            timer();
+
+        } else {
+
+            scoreCalculator();
+        }
+
+    }, 1000);
 }
 
 //this function will keep track of score
@@ -136,12 +165,19 @@ function scoreCalculator() {
 
     var html = "<p>Incorrect Answers: " + incorrect + "</p>";
     $('#answerButtons')
-        .empty()
-        .html(html);
+        .empty() //blow out old html
+        .html(html); //insert new html
+
+    $('#unanswered').text('Unanswered: ' + (questions.length - 1 - currentQuestion));
+
+    $('#submit').html('Reset').click(function(){
+        gameReset();
+    });
 
 }
 
 //this function will restart the game after completion.
 function gameReset() {
+    location.reload();
 
 }
