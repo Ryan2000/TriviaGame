@@ -135,7 +135,7 @@ function scoreCalculator() {
     $('#question1').text('Correct Answers: ' + correct);
 
     var html = "<p>Incorrect Answers: " + incorrect + "</p>";
-    $('answerButtons')
+    $('#answerButtons')
         .empty()
         .html(html);
 
