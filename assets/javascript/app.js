@@ -21,6 +21,7 @@ questionCsv =
 
 var questions = [];
 var currentQuestion = 0;
+var answeredQuestions = 0;
 
 
 $(document).ready(function(){
@@ -35,26 +36,29 @@ $(document).ready(function(){
         //Check for game over by comparing
         //currentQuestion to questions.length - 1
         //currentQuestion reflects the position within the array
-        if (currentQuestion < questions.length -1) {
+        if (currentQuestion < questions.length) {
 
             //Check answer first
             checkAnswers();
+            currentQuestion++;
 
-            //Then move to next question
-            var nextQuestion = questions[++currentQuestion];
-            updateQuestion(nextQuestion);
+            if(currentQuestion < questions.length){
+                //Then move to next question
+                var nextQuestion = questions[currentQuestion];
+                updateQuestion(nextQuestion);
+                //Reset the round
+                roundReset();
 
-            //Reset the round
-            roundReset();
-
-            //Reset remainingTime to 10
-            if (currentQuestion < questions.length - 1){
                 //Reset remainingTime to 10
-                timeRemaining = 10;
+                if (currentQuestion < questions.length - 1){
+                    //Reset remainingTime to 10
+                    timeRemaining = 10;
+                } else {
+                    window.clearTimeout(timerHandle); //blows out the timer once all questions answered
+                }
             } else {
-                window.clearTimeout(timerHandle);
+                scoreCalculator();
             }
-
         } else {
 
             scoreCalculator();
@@ -119,6 +123,7 @@ function checkAnswers() {
                 //else - increment the incorrect variable
                 incorrect++;
             }
+            answeredQuestions++;
         }
 
     });
@@ -130,6 +135,7 @@ function checkAnswers() {
 var timeRemaining = 10;
 var timerHandle;
 //this function will launch the timer
+//a 1 second timer for 10 seconds
 function timer() {
 
     return setTimeout(function(){
@@ -152,7 +158,7 @@ function timer() {
             }
 
             //Make a recursive call to this function to reset the timer
-            timerHandle = timer();
+            timerHandle = timer(); //This resets the timer for another second
 
         } else {
             //no recursive call to timer() so the timer no longer resets
@@ -175,8 +181,7 @@ function scoreCalculator() {
         .empty() //blow out old html
         .html(html); //insert new html
 
-    $('#unanswered').text('Unanswered: ' + (questions.length - 1 - currentQuestion));
-
+    $('#unanswered').text('Unanswered: ' + (questions.length - answeredQuestions));
     $('#submit').html('Reset').click(function(){
         gameReset();
     });
